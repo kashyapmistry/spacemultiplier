@@ -59,13 +59,13 @@ app.post('/contact', async (req, res) => {
     });
 
     // 3. Save enquiry to Google Sheet
-    const values = [[firstName, lastName, email, phone, service, budget || 'Not provided', message, new Date().toLocaleString(), source || 'Unknown']];
-    await sheets.spreadsheets.values.append({
-      spreadsheetId: SPREADSHEET_ID,
-      range: 'Sheet1!A:H',
-      valueInputOption: 'RAW',
-      resource: { values }
-    });
+    // const values = [[firstName, lastName, email, phone, service, budget || 'Not provided', message, new Date().toLocaleString(), source || 'Unknown']];
+    // await sheets.spreadsheets.values.append({
+    //   spreadsheetId: SPREADSHEET_ID,
+    //   range: 'Sheet1!A:H',
+    //   valueInputOption: 'RAW',
+    //   resource: { values }
+    // });
 
     res.json({ success: true });
   } catch (error) {
