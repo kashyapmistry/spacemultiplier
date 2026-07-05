@@ -69,8 +69,8 @@ app.post('/contact', async (req, res) => {
 
     res.json({ success: true });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, error: 'Failed to send or save' });
+    console.error("Error in /contact:", error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
