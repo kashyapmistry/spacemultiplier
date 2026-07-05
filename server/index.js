@@ -68,7 +68,9 @@ app.post('/contact', async (req, res) => {
   }
 });
 
-app.get('/',(req,res)=>res.send('Backend is running!'))
+app.get('/contact', (req, res) => {
+  res.send('Contact GET route works');
+});
 
 
 const PORT = process.env.PORT || 5000;
