@@ -32,6 +32,7 @@ const transporter = nodemailer.createTransport({
 });
 
 app.post('/contact', async (req, res) => {
+  console.log("POST /contact hit");
   const { firstName, lastName, email, phone, service, budget, message, source } = req.body;
 
   try {
