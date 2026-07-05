@@ -20,7 +20,7 @@ const auth = new google.auth.JWT(
 const sheets = google.sheets({ version: 'v4', auth });
 
 // Replace with your actual Google Sheet ID (from the sheet URL)
-const SPREADSHEET_ID = '1nJkoDcTztDIR42HMghB4gN1lTMu5bQJFwYVDPFZ4oNk';
+const SPREADSHEET_ID = process.env.SHEET_ID;
 
 // Nodemailer setup
 const transporter = nodemailer.createTransport({
