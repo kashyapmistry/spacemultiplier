@@ -31,6 +31,12 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
+
+
 app.post('/contact', async (req, res) => {
   console.log("POST /contact hit");
   const { firstName, lastName, email, phone, service, budget, message, source } = req.body;
@@ -66,10 +72,6 @@ app.post('/contact', async (req, res) => {
     console.error(error);
     res.status(500).json({ success: false, error: 'Failed to send or save' });
   }
-});
-
-app.get('/contact', (req, res) => {
-  res.send('Contact GET route works');
 });
 
 
