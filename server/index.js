@@ -31,14 +31,14 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.post('/contact', (req, res) => {
-  console.log("DEBUG: POST /contact reached");
-  res.send("Contact POST route works");
-});
+// app.post('/contact', (req, res) => {
+//   console.log("DEBUG: POST /contact reached");
+//   res.send("Contact POST route works");
+// });
 
 
 app.post('/contact', async (req, res) => {
-  console.log("POST /contact hit");
+  console.log("POST /contact hit", req.body);
   const { firstName, lastName, email, phone, service, budget, message, source } = req.body;
 
   try {
@@ -47,7 +47,7 @@ app.post('/contact', async (req, res) => {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
       subject: 'New Enquiry Received',
-      text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nBudget: ${budget || 'Not provided'}\nMessage: ${message}\nsource: ${source || 'Unknown'}`,
+      text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nBudget: ${budget || 'Not provided'}\nMessage: ${message}\nSource: ${source || 'Unknown'}`
     });
 
     // 2. Send thank-you email to user
@@ -55,16 +55,16 @@ app.post('/contact', async (req, res) => {
       from: process.env.EMAIL_USER,
       to: email,
       subject: 'Thank you for contacting SpaceMultiplier',
-      text: `Hi ${firstName},\n\nThank you for reaching out! We have received your enquiry and will get back to you soon.\n\n- SpaceMultiplier Team`,
+      text: `Hi ${firstName},\n\nThank you for reaching out! We have received your enquiry and will get back to you soon.\n\n- SpaceMultiplier Team`
     });
 
     // 3. Save enquiry to Google Sheet
-    const values = [[firstName, lastName, email, phone, service, budget || 'Not provided', message, new Date().toLocaleString(), source || 'Unknown' ]];
+    const values = [[firstName, lastName, email, phone, service, budget || 'Not provided', message, new Date().toLocaleString(), source || 'Unknown']];
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'Sheet1!A:H', // adjust if your sheet name is different
+      range: 'Sheet1!A:H',
       valueInputOption: 'RAW',
-      resource: { values },
+      resource: { values }
     });
 
     res.json({ success: true });
@@ -73,6 +73,7 @@ app.post('/contact', async (req, res) => {
     res.status(500).json({ success: false, error: 'Failed to send or save' });
   }
 });
+
 
 
 const PORT = process.env.PORT || 5000;
