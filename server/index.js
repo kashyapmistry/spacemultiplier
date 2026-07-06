@@ -42,36 +42,40 @@ app.post('/contact', async (req, res) => {
   const { firstName, lastName, email, phone, service, budget, message, source } = req.body;
 
   try {
-    // 1. Send email to admin
+    console.log("Trying to send admin email...");
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
       subject: 'New Enquiry Received',
-      text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nBudget: ${budget || 'Not provided'}\nMessage: ${message}\nSource: ${source || 'Unknown'}`
+      text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}`
     });
+    console.log("Admin email sent!");
 
-    // 2. Send thank-you email to user
+    console.log("Trying to send thank-you email...");
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
       subject: 'Thank you for contacting SpaceMultiplier',
-      text: `Hi ${firstName},\n\nThank you for reaching out! We have received your enquiry and will get back to you soon.\n\n- SpaceMultiplier Team`
+      text: `Hi ${firstName},\n\nThank you for reaching out!`
     });
+    console.log("User email sent!");
 
-    // 3. Save enquiry to Google Sheet
-    // const values = [[firstName, lastName, email, phone, service, budget || 'Not provided', message, new Date().toLocaleString(), source || 'Unknown']];
-    // await sheets.spreadsheets.values.append({
-    //   spreadsheetId: SPREADSHEET_ID,
-    //   range: 'Sheet1!A:H',
-    //   valueInputOption: 'RAW',
-    //   resource: { values }
-    // });
+    console.log("Trying to save to Google Sheets...");
+    const values = [[firstName, lastName, email, phone, service, budget, message, new Date().toLocaleString(), source]];
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'Sheet1!A:H',
+      valueInputOption: 'RAW',
+      resource: { values }
+    });
+    console.log("Saved to Google Sheets!");
 
     res.json({ success: true });
   } catch (error) {
     console.error("Error in /contact:", error);
     res.status(500).json({ success: false, error: error.message });
   }
+
 });
 
 
