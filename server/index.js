@@ -19,7 +19,7 @@ const sheets = google.sheets({ version: 'v4', auth });
 
 // Replace with your actual Google Sheet ID (from the sheet URL)
 const SPREADSHEET_ID = process.env.SHEET_ID;
-console.log("GOOGLE_PRIVATE_KEY preview:", process.env.SHEET_ID);
+
 // Nodemailer setup
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -65,4 +65,5 @@ app.post('/contact', async (req, res) => {
   }
 });
 
-app.listen(5000, () => console.log('Server running on port 5000'));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
