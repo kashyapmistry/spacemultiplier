@@ -37,6 +37,7 @@ app.use((req, res, next) => {
 
 
 app.post('/contact', async (req, res) => {
+  console.log("POST /contact hit", req.body);
   const { firstName, lastName, email, phone, service, budget, message, source } = req.body;
 
   try {
@@ -60,7 +61,7 @@ app.post('/contact', async (req, res) => {
     const values = [[firstName, lastName, email, phone, service, budget || 'Not provided', message, new Date().toLocaleString(), source || 'Unknown' ]];
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'Sheet1!A:H', // adjust if your sheet name is different
+      range: 'Sheet1!A:I', // adjust if your sheet name is different
       valueInputOption: 'RAW',
       resource: { values },
     });
@@ -68,7 +69,7 @@ app.post('/contact', async (req, res) => {
     res.json({ success: true });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: 'Failed to send or save' });
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
