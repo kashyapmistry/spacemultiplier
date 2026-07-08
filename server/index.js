@@ -43,39 +43,43 @@ app.post('/ping', (req, res) => {
 
 app.post('/contact', async (req, res) => {
   console.log("POST /contact hit", req.body);
-  const { firstName, lastName, email, phone, service, budget, message, source } = req.body;
 
-  try {
-    // 1. Send email to admin
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
-      subject: 'New Enquiry Received',
-      text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nBudget: ${budget || 'Not provided'}\nMessage: ${message}\nsource: ${source || 'Unknown'}`,
-    });
+  // Just respond immediately, skip email/Sheets
+  res.json({ success: true, received: req.body });
+  // console.log("POST /contact hit", req.body);
+  // const { firstName, lastName, email, phone, service, budget, message, source } = req.body;
 
-    // 2. Send thank-you email to user
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'Thank you for contacting SpaceMultiplier',
-      text: `Hi ${firstName},\n\nThank you for reaching out! We have received your enquiry and will get back to you soon.\n\n- SpaceMultiplier Team`,
-    });
+  // try {
+  //   // 1. Send email to admin
+  //   await transporter.sendMail({
+  //     from: process.env.EMAIL_USER,
+  //     to: process.env.EMAIL_USER,
+  //     subject: 'New Enquiry Received',
+  //     text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nBudget: ${budget || 'Not provided'}\nMessage: ${message}\nsource: ${source || 'Unknown'}`,
+  //   });
 
-    // 3. Save enquiry to Google Sheet
-    const values = [[firstName, lastName, email, phone, service, budget || 'Not provided', message, new Date().toLocaleString(), source || 'Unknown' ]];
-    await sheets.spreadsheets.values.append({
-      spreadsheetId: SPREADSHEET_ID,
-      range: 'Sheet1!A:I', // adjust if your sheet name is different
-      valueInputOption: 'RAW',
-      resource: { values },
-    });
+  //   // 2. Send thank-you email to user
+  //   await transporter.sendMail({
+  //     from: process.env.EMAIL_USER,
+  //     to: email,
+  //     subject: 'Thank you for contacting SpaceMultiplier',
+  //     text: `Hi ${firstName},\n\nThank you for reaching out! We have received your enquiry and will get back to you soon.\n\n- SpaceMultiplier Team`,
+  //   });
 
-    res.json({ success: true });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, error: error.message });
-  }
+  //   // 3. Save enquiry to Google Sheet
+  //   const values = [[firstName, lastName, email, phone, service, budget || 'Not provided', message, new Date().toLocaleString(), source || 'Unknown' ]];
+  //   await sheets.spreadsheets.values.append({
+  //     spreadsheetId: SPREADSHEET_ID,
+  //     range: 'Sheet1!A:I', // adjust if your sheet name is different
+  //     valueInputOption: 'RAW',
+  //     resource: { values },
+  //   });
+
+  //   res.json({ success: true });
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).json({ success: false, error: error.message });
+  // }
 });
 
 const PORT = process.env.PORT || 5000;
