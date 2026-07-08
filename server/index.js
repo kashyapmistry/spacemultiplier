@@ -29,13 +29,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.get('/', (req, res) => {
-  res.send('Backend is running!');
-});
-
-app.post('/contact', (req, res) => {
-  console.log("POST /contact hit");
-  res.json({ success: true });
+app.get('/contact', (req, res) => {
+  res.send('Contact GET route works');
 });
 
 
