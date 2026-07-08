@@ -29,9 +29,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.get('/contact', (req, res) => {
-  res.send('Contact GET route works');
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
 });
+
 
 
 app.post('/contact', async (req, res) => {
