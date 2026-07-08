@@ -34,6 +34,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.post('/ping', (req, res) => {
+  console.log("Ping route hit", req.body);
+  res.json({ ok: true });
+});
+
 
 
 app.post('/contact', async (req, res) => {
