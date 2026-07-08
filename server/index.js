@@ -46,57 +46,26 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/test-email', async (req, res) => {
-  try {
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
-      subject: 'Test Email',
-      text: 'This is a test email from Render.'
-    });
-    res.json({ success: true });
-  } catch (err) {
-    console.error("Email error:", err);
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-app.get('/test-sheets', async (req, res) => {
-  try {
-    const values = [["Test", "Row", new Date().toLocaleString()]];
-    await sheets.spreadsheets.values.append({
-      spreadsheetId: SPREADSHEET_ID,
-      range: 'Sheet1!A:C',
-      valueInputOption: 'RAW',
-      resource: { values },
-    });
-    res.json({ success: true });
-  } catch (err) {
-    console.error("Sheets error:", err);
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
 app.post('/contact', async (req, res) => {
   console.log("POST /contact hit", req.body);
   const { firstName, lastName, email, phone, service, budget, message, source } = req.body;
 
   try {
     // 1. Send email to admin
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
-      subject: 'New Enquiry Received',
-      text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nBudget: ${budget || 'Not provided'}\nMessage: ${message}\nsource: ${source || 'Unknown'}`,
-    });
+    // await transporter.sendMail({
+    //   from: process.env.EMAIL_USER,
+    //   to: process.env.EMAIL_USER,
+    //   subject: 'New Enquiry Received',
+    //   text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nBudget: ${budget || 'Not provided'}\nMessage: ${message}\nsource: ${source || 'Unknown'}`,
+    // });
 
     // 2. Send thank-you email to user
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'Thank you for contacting SpaceMultiplier',
-      text: `Hi ${firstName},\n\nThank you for reaching out! We have received your enquiry and will get back to you soon.\n\n- SpaceMultiplier Team`,
-    });
+    // await transporter.sendMail({
+    //   from: process.env.EMAIL_USER,
+    //   to: email,
+    //   subject: 'Thank you for contacting SpaceMultiplier',
+    //   text: `Hi ${firstName},\n\nThank you for reaching out! We have received your enquiry and will get back to you soon.\n\n- SpaceMultiplier Team`,
+    // });
 
     // 3. Save enquiry to Google Sheet
     const values = [[firstName, lastName, email, phone, service, budget || 'Not provided', message, new Date().toLocaleString(), source || 'Unknown' ]];
@@ -113,10 +82,6 @@ app.post('/contact', async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-
-app.get('/', (req, res) => {
-  res.send('OK');
-})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
