@@ -33,6 +33,11 @@ app.get('/', (req, res) => {
   res.send('Backend is running!');
 });
 
+app.post('/contact', (req, res) => {
+  console.log("POST /contact hit");
+  res.json({ success: true });
+});
+
 
 app.post('/contact', async (req, res) => {
   const { firstName, lastName, email, phone, service, budget, message, source } = req.body;
