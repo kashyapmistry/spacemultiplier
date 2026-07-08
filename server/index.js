@@ -15,6 +15,16 @@ const auth = new google.auth.JWT({
   key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
+
+(async () => {
+  try {
+    await auth.authorize();
+    console.log("✅ Google JWT authorized successfully!");
+  } catch (err) {
+    console.error("❌ Google JWT authorization failed:", err);
+  }
+})();
+
 const sheets = google.sheets({ version: 'v4', auth });
 
 // Replace with your actual Google Sheet ID (from the sheet URL)
@@ -34,52 +44,41 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post('/ping', (req, res) => {
-  console.log("Ping route hit", req.body);
-  res.json({ ok: true });
-});
-
-
-
 app.post('/contact', async (req, res) => {
   console.log("POST /contact hit", req.body);
+  const { firstName, lastName, email, phone, service, budget, message, source } = req.body;
 
-  // Just respond immediately, skip email/Sheets
-  res.json({ success: true, received: req.body });
-  // console.log("POST /contact hit", req.body);
-  // const { firstName, lastName, email, phone, service, budget, message, source } = req.body;
+  try {
+    // 1. Send email to admin
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER,
+      subject: 'New Enquiry Received',
+      text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nBudget: ${budget || 'Not provided'}\nMessage: ${message}\nsource: ${source || 'Unknown'}`,
+    });
 
-  // try {
-  //   // 1. Send email to admin
-  //   await transporter.sendMail({
-  //     from: process.env.EMAIL_USER,
-  //     to: process.env.EMAIL_USER,
-  //     subject: 'New Enquiry Received',
-  //     text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nBudget: ${budget || 'Not provided'}\nMessage: ${message}\nsource: ${source || 'Unknown'}`,
-  //   });
+    // 2. Send thank-you email to user
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Thank you for contacting SpaceMultiplier',
+      text: `Hi ${firstName},\n\nThank you for reaching out! We have received your enquiry and will get back to you soon.\n\n- SpaceMultiplier Team`,
+    });
 
-  //   // 2. Send thank-you email to user
-  //   await transporter.sendMail({
-  //     from: process.env.EMAIL_USER,
-  //     to: email,
-  //     subject: 'Thank you for contacting SpaceMultiplier',
-  //     text: `Hi ${firstName},\n\nThank you for reaching out! We have received your enquiry and will get back to you soon.\n\n- SpaceMultiplier Team`,
-  //   });
+    // 3. Save enquiry to Google Sheet
+    const values = [[firstName, lastName, email, phone, service, budget || 'Not provided', message, new Date().toLocaleString(), source || 'Unknown' ]];
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'Sheet1!A:I', // adjust if your sheet name is different
+      valueInputOption: 'RAW',
+      resource: { values },
+    });
 
-  //   // 3. Save enquiry to Google Sheet
-  //   const values = [[firstName, lastName, email, phone, service, budget || 'Not provided', message, new Date().toLocaleString(), source || 'Unknown' ]];
-  //   await sheets.spreadsheets.values.append({
-  //     spreadsheetId: SPREADSHEET_ID,
-  //     range: 'Sheet1!A:I', // adjust if your sheet name is different
-  //     valueInputOption: 'RAW',
-  //     resource: { values },
-  //   });
-
-  //   res.json({ success: true });
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).json({ success: false, error: error.message });
-  // }
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 const PORT = process.env.PORT || 5000;
