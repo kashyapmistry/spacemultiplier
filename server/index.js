@@ -55,14 +55,14 @@ app.post('/contact', async (req, res) => {
 
   try {
 
-    transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to: "recipient@example.com",
-    subject: "Test Email",
-    text: "Testing Nodemailer"
-  })
-  .then(info => console.log("Email sent:", info.response))
-  .catch(error => console.error("SMTP Error:", error));
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: "mistrykashyap309@gmail.com",
+      subject: "Test Email",
+      text: "Testing Nodemailer"
+    })
+      .then(info => console.log("Email sent:", info.response))
+      .catch(error => console.error("SMTP Error:", error));
     // 1. Send email to admin
     // await transporter.sendMail({
     //   from: process.env.EMAIL_USER,
