@@ -45,7 +45,7 @@ export default function Contact() {
   const pageRef = useScrollReveal();
   const [openFaq, setOpenFaq] = useState(null);
 
-   const [form, setForm] = useState({
+  const [form, setForm] = useState({
     firstName: '',
     lastName: '',
     email: '',
@@ -58,12 +58,13 @@ export default function Contact() {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const handleChange = e => setForm(s => ({ ...s, [e.target.name]: e.target.value }));
-  
+  console.log("Frontend API URL:", process.env.NEXT_PUBLIC_API_URL);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch('https://spacemultiplier.onrender.com/contact', {   // ✅ matches backend route
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contact`, {   // ✅ matches backend route
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
