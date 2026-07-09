@@ -58,13 +58,13 @@ export default function Contact() {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const handleChange = e => setForm(s => ({ ...s, [e.target.name]: e.target.value }));
-  console.log("Frontend API URL:", process.env.NEXT_PUBLIC_API_URL);
+  console.log("Frontend API URL:", process.env.REACT_APP_API_URL);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contact`, {   // ✅ matches backend route
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/contact`, {   // ✅ matches backend route
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),

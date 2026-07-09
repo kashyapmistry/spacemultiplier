@@ -30,7 +30,7 @@ const sheets = google.sheets({ version: 'v4', auth });
 // Replace with your actual Google Sheet ID (from the sheet URL)
 const SPREADSHEET_ID = process.env.SHEET_ID;
 
-console.log("NEXT_PUBLIC_API_URL:", process.env.NEXT_PUBLIC_API_URL);
+console.log("NEXT_PUBLIC_API_URL:", process.env.REACT_APP_API_URL);
 
 
 // Nodemailer setup
