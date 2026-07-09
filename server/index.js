@@ -30,8 +30,6 @@ const sheets = google.sheets({ version: 'v4', auth });
 // Replace with your actual Google Sheet ID (from the sheet URL)
 const SPREADSHEET_ID = process.env.SHEET_ID;
 
-console.log("NEXT_PUBLIC_API_URL:", process.env.REACT_APP_API_URL);
-
 
 // Nodemailer setup
 const transporter = nodemailer.createTransport({
@@ -44,25 +42,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-});
-
 app.post('/contact', async (req, res) => {
   console.log("POST /contact hit", req.body);
   const { firstName, lastName, email, phone, service, budget, message, source } = req.body;
 
   try {
-
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: "mistrykashyap309@gmail.com",
-      subject: "Test Email",
-      text: "Testing Nodemailer"
-    })
-      .then(info => console.log("Email sent:", info.response))
-      .catch(error => console.error("SMTP Error:", error));
     // 1. Send email to admin
     // await transporter.sendMail({
     //   from: process.env.EMAIL_USER,
