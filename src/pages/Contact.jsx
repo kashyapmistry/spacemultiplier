@@ -62,26 +62,19 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/contact`, {   // ✅ matches backend route
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setSent(true);
-      } else {
-        alert('Something went wrong. Please try again.');
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Error sending message.');
-    } finally {
-      setLoading(false); // hide loading after response
+    const res = await fetch('/api/submitForm', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName, lastName, email, phone, service, budget, message, source }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert('Form submitted successfully!');
+    } else {
+      alert('Error: ' + data.error);
     }
   };
+
   return (
     <main ref={pageRef}>
 
