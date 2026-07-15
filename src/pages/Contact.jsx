@@ -62,18 +62,30 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch('/api/submitForm', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ firstName, lastName, email, phone, service, budget, message, source }),
-    });
-    const data = await res.json();
-    if (data.success) {
-      alert('Form submitted successfully!');
-    } else {
-      alert('Error: ' + data.error);
+    setLoading(true);
+
+    try {
+      const res = await fetch('/api/submitForm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setSent(true);
+        alert('Form submitted successfully!');
+      } else {
+        alert('Error: ' + data.error);
+      }
+    } catch (err) {
+      console.error('Form submission error:', err);
+      alert('Something went wrong.');
+    } finally {
+      setLoading(false);
     }
   };
+
 
   return (
     <main ref={pageRef}>
