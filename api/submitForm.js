@@ -2,6 +2,15 @@ import nodemailer from 'nodemailer';
 import { google } from 'googleapis';
 
 export default async function handler(req, res) {
+
+    console.log("Environment Variables:", {
+        GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
+        GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY ? "Loaded" : "Missing",
+        SHEET_ID: process.env.SHEET_ID,
+        EMAIL_USER: process.env.EMAIL_USER,
+        EMAIL_PASS: process.env.EMAIL_PASS ? "Loaded" : "Missing",
+        ADMIN_EMAIL: process.env.ADMIN_EMAIL,
+    });
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
