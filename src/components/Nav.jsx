@@ -92,6 +92,7 @@ export default function Nav() {
 
       {/* Mobile Drawer */}
       <div className={`drawer${drawerOpen ? ' show' : ''}`}>
+        <div>
         {NAV_ITEMS.map(item => (
           <Link key={item.to} to={item.to} onClick={() => setDrawerOpen(false)}>
             {item.label}
@@ -106,6 +107,7 @@ export default function Nav() {
           Contact Us
         </a>
         <span className="drawer-tag">Design Studio · Mumbai</span>
+        </div>
       </div>
     </>
   );
