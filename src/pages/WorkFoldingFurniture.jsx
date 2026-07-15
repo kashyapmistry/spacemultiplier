@@ -159,7 +159,6 @@ export default function WorkFoldingFurniture() {
                   className="view-more-btn-foldding"
                   onClick={() => openGallery(product.images, product.slug)}
                 >
-                  View More
                 </button>
               </div>
             </div>

@@ -616,7 +616,7 @@
 }
 
 .project-card:hover .proj-photo-inner {
-  transform: scale(1.06);
+  /* transform: scale(1.06); */
 }
 
 .proj-veil {
@@ -725,28 +725,23 @@
 }
 .project-card .view-more-btn-interior,
 .art-piece-photo-inner .view-more-btn-foldding {
-  display: none;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  font-size: .58rem;
-  letter-spacing: .12em;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
   padding: .5rem 1rem;
-  border: .5px solid var(--gold);;
+  border: .5px solid #fff;
   color: var(--cream);
-  background: var(--gold);
+  background: var(--gold) url('../assets/images/Homes/see-more-img.svg') no-repeat center center;
+  background-size: 30px;
   cursor: pointer;
   transition: 0.3s;
+  border-radius: 100%;
 }
 .project-card .view-more-btn-interior:hover,
 .art-piece-photo-inner .view-more-btn-foldding:hover{
-  background: var(--cream);
-  color: var(--gold);
-}
-.project-card:hover .view-more-btn-interior,
-.art-piece-photo:hover .art-piece-photo-inner .view-more-btn-foldding{
-  display: block;
+  transform: scale(1.05);
 }
 
 
@@ -901,7 +896,7 @@
 }
 
 .art-piece-photo:hover .art-piece-photo-inner {
-  transform: scale(1.04);
+  /* transform: scale(1.04); */
 }
 
 .art-piece-num {

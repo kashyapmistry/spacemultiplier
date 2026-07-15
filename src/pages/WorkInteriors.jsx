@@ -175,9 +175,7 @@ export default function WorkInteriors() {
                 <button
                   className="view-more-btn-interior"
                   onClick={() => openGallery(p.images, p.ph)}
-                >
-                  View More
-                </button>
+                ></button>
               </div>
             </div>
             <div className="proj-info">
