@@ -1,4 +1,5 @@
 node_modules/
 build/
-.env
-server/credentials.json
+.env.local
+.vercel
+.env*

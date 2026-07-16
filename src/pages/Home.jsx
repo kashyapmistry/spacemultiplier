@@ -86,7 +86,7 @@ export default function Home() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/contact`, {   // ✅ matches backend route
+      const res = await fetch('/api/submitForm', {   // ✅ Vercel serverless function
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -101,7 +101,7 @@ export default function Home() {
       console.error(err);
       alert('Error sending message.');
     } finally {
-      setLoading(false); // hide loading after response
+      setLoading(false);
     }
   };
 
