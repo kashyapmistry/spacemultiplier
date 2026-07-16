@@ -35,7 +35,7 @@ export default async function handler(req, res) {
       from: process.env.EMAIL_USER,
       to: process.env.ADMIN_EMAIL,
       subject: 'New Enquiry Received',
-      text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nBudget: ${budget || 'Not provided'}\nMessage: ${message}\nSource: ${source || 'Unknown'}`,
+      text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nBudget: ${budget || 'Not provided'}\nMessage: ${message}s`,
     });
 
     // 2. Send thank-you email to user
