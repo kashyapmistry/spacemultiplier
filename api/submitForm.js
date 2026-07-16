@@ -47,6 +47,18 @@ export default async function handler(req, res) {
     });
 
     // 3. Save enquiry to Google Sheet
+    const formatDate = (date) => {
+      return date
+        .toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        });
+    };
+
     const values = [[
       firstName,
       lastName,
@@ -55,7 +67,7 @@ export default async function handler(req, res) {
       service,
       budget || 'Not provided',
       message,
-      new Date().toLocaleString(),
+      formatDate(new Date()),
       source || 'Unknown'
     ]];
 
