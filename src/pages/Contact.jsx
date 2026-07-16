@@ -58,7 +58,6 @@ export default function Contact() {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const handleChange = e => setForm(s => ({ ...s, [e.target.name]: e.target.value }));
-  console.log("Frontend API URL:", process.env.REACT_APP_API_URL);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,13 +73,11 @@ export default function Contact() {
       const data = await res.json();
       if (data.success) {
         setSent(true);
-        alert('Form submitted successfully!');
       } else {
         alert('Error: ' + data.error);
       }
     } catch (err) {
       console.error('Form submission error:', err);
-      alert('Something went wrong.');
     } finally {
       setLoading(false);
     }
